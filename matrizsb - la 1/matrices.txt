@@ -1,0 +1,654 @@
+clasematrices
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MatricesCodeGunnerPro
+{
+    class clasematrices
+    {
+
+
+        const int MAXF = 100;
+        const int MAXC = 100;
+        private int[,] x;
+        private int f, c;
+        public clasematrices()
+        {
+            x = new int[MAXF, MAXC];
+            f = 0; c = 0;
+        }
+        public void cargar(int nf, int nc, int a, int b)
+        {
+            f = nf; c = nc;
+            int f1, c1;
+            Random r = new Random();
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                for (c1 = 1; c1 <= c; c1++)
+                {
+                    x[f1, c1] = r.Next(a, b);
+                }
+            }
+        }
+        public string descargar()
+        {
+            string s = "";
+            int f1, c1;
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                for (c1 = 1; c1 <= c; c1++)
+                {
+                    s = s + x[f1, c1] + "\x09";
+                }
+                s = s + "\x0d" + "\x0a";
+            }
+            return s;
+        }
+
+        //1
+        public void Ejercicio1p1(int nf, int nc, int a, int b)
+        {
+            f = nf; c = nc;
+            int f1, c1, fibo;
+            bool ban;
+            ban = true;
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                if (ban == true)
+                {
+                    for (c1 = 1; c1 <= c; c1++)
+                    {
+                        fibo = a + b;
+                        a = b;
+                        b = fibo;
+                        x[f1, c1] = fibo;
+                    }
+                }
+                else
+                {
+                    for (c1 = c; c1 >= 1; c1--)
+                    {
+                        fibo = a + b;
+                        a = b;
+                        b = fibo;
+                        x[f1, c1] = fibo;
+                    }
+                }
+                ban = !ban;
+
+            }
+        }
+
+        //2 Cargar el arreglo de 3D según secuencia:
+
+
+
+
+        //3
+
+        public int Frec1ele(int ele)
+        {
+            int f1, c1, c;
+            c = 0;
+            {
+                for (f1 = 1; f1 <= f; f1++)
+                {
+                    for (c1 = 1; c1 <= this.c; c1++)
+                    {
+                        if (x[f1, c1] == ele)
+                        {
+                            c++;
+                        }
+                    }
+                }
+            }
+            return c;
+        }
+
+        public int Ejercicio3p1()
+        {
+            int f1, c1, f2, c2, contador = 0;
+            bool yaContado;
+
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                for (c1 = 1; c1 <= c; c1++)
+                {
+                    yaContado = false;
+
+                    // Verifica si el elemento ya apareció antes en la matriz
+                    for (f2 = 1; f2 <= f; f2++)
+                    {
+                        for (c2 = 1; c2 <= c; c2++)
+                        {
+                            if ((f2 < f1) || (f2 == f1 && c2 < c1))
+                            {
+                                if (x[f2, c2] == x[f1, c1])
+                                {
+                                    yaContado = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!yaContado && Frec1ele(x[f1, c1]) >= 2)
+                    {
+                        contador++;
+                    }
+                }
+            }
+
+            return contador;
+        }
+
+
+        //4
+
+
+        //5
+        public void Ejercicio5p1()
+        {
+            int f1;
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                x[f1, c + 1] = ele_may(f1);
+            }
+            c = c + 1;
+        }
+        public int Frec1(int ele, int f1)
+        {
+            int c1, c;
+            c = 0;
+            {
+                for (c1 = 1; c1 <= this.c; c1++)
+                {
+                    if (x[f1, c1] == ele)
+                    {
+                        c++;
+                    }
+                }
+            }
+            return c;
+        }
+        public int ele_may(int f1)
+        {
+            int c1, ele;
+            ele = 0;
+            int may = 0;
+            int may2;
+            for (c1 = 1; c1 <= c; c1++)
+            {
+                may2 = Frec1(x[f1, c1], f1);
+                if (may2 > may)
+                {
+                    may = may2;
+                    ele = x[f1, c1];
+                }
+            }
+            return ele;
+        }
+
+        //6
+        public bool Ejercicio6p1(clasematrices m2)
+        {
+            bool ban = true;
+            int f1, c1;
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                for (c1 = 1; c1 <= c; c1++)
+                {
+                    if (!(m2.ExisteElemento(x[f1, c1])))
+                    {
+                        ban = false;
+                    }
+                }
+            }
+            return ban;
+        }
+        public bool ExisteElemento(int ele)
+        {
+            int f1, c1, aux;
+            aux = 0;
+            bool ban = false;
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                for (c1 = 1; c1 <= c; c1++)
+                {
+                    if (x[f1, c1] == ele)
+                    {
+                        ban = true;
+                        aux = x[f1, c1];
+                    }
+                }
+            }
+            return ban;
+        }
+        //7
+
+        public void Intercambiar(int f1, int c1, int f2, int c2)
+        {
+            int aux = x[f1, c1];
+            x[f1, c1] = x[f2, c2];
+            x[f2, c2] = aux;
+        }
+        public void OrdenarFila(int f1, int a, int b)
+        {
+            int c1, c2;
+            for (c1 = a; c1 <= b; c1++)
+            {
+                for (c2 = c1 + 1; c2 <= b; c2++)
+                {
+                    if (x[f1, c1] > x[f1, c2])
+                    {
+                        Intercambiar(f1, c1, f1, c2);
+                    }
+                }
+            }
+        }
+        public void segmentarparimpar(int f1)
+        {
+            int izq, der;
+            izq = 1; der = c;
+            while (izq < der)
+            {
+                while ((izq < der) && (x[f1, izq] % 2 == 0))
+                {
+                    izq++;
+                }
+                while ((izq < der) && (x[f1, der] % 2 != 0))
+                {
+                    der--;
+                }
+                if (izq < der)
+                {
+                    Intercambiar(f1, izq, f1, der);
+                }
+            }
+            if (x[f1, izq] % 2 == 0)
+            {
+                OrdenarFila(f1, 1, izq);
+                OrdenarFila(f1, izq + 1, c);
+            }
+            else
+            {
+                OrdenarFila(f1, 1, izq - 1);
+                OrdenarFila(f1, izq, c);
+            }
+        }
+        public void Ejercicio7p1()
+        {
+            int f1;
+            for (f1 = 1; f1 <= f; f1++)
+            {
+                segmentarparimpar(f1);
+            }
+        }
+
+        //8
+        public void Ejercicio8p1()
+        {
+            int p, d;
+            for (p = 1; p <= f - 1; p++)
+            {
+                for (d = p + 1; d <= f; d++)
+                {
+                    if (ContadorDePrimos(p) > ContadorDePrimos(d))
+                    {
+                        Intercambiarfilas(p, d);
+                    }
+                }
+            }
+
+            for (int f1 = 1; f1 <= f; f1++)
+            {
+
+                x[f1, c + 1] = ContadorDePrimos(f1);
+
+            }
+            c++;
+
+        }
+
+
+        public int ContadorDePrimos(int f1)
+        {
+            int c = 0;
+            int c1;
+            for (c1 = 1; c1 <= this.c; c1++)
+            {
+                if (verif_primo(x[f1, c1]))
+                {
+                    c++;
+                }
+            }
+            return c;
+        }
+
+        public void Intercambiarfilas(int f1, int f2)
+        {
+            int c1;
+            for (c1 = 1; c1 <= c; c1++)
+            {
+                Intercambiar(f1, c1, f2, c1);
+            }
+        }//
+
+
+        public bool verif_primo(int ele)
+        {
+            bool ban = true;
+            int c = 2;
+            if (ele > 1)
+            {
+                while (c <= (ele / 2) && (ban == true))
+                {
+                    if (ele % c == 0)
+                    {
+                        ban = false;
+                    }
+                    c++;
+                }
+            }
+            else
+            {
+                ban = false;
+            }
+
+            return ban;
+        }
+
+
+        //9
+
+
+        public void OrdenarMatrizSinVector()
+        {
+            int total = f * c;
+            int i, j;
+            int fi1, ci1, fi2, ci2;
+            int aux;
+
+            for (i = 1; i <= total - 1; i++)
+            {
+                for (j = i + 1; j <= total; j++)
+                {
+                    // Calcular las posiciones según el esquema (abajo hacia arriba por columnas)
+                    ci1 = ((i - 1) / f) + 1;
+                    fi1 = f - ((i - 1) % f);
+
+                    ci2 = ((j - 1) / f) + 1;
+                    fi2 = f - ((j - 1) % f);
+
+                    // Comparar y ordenar
+                    if (x[fi1, ci1] > x[fi2, ci2])
+                    {
+                        aux = x[fi1, ci1];
+                        x[fi1, ci1] = x[fi2, ci2];
+                        x[fi2, ci2] = aux;
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+        //10
+        // Ejercicio: Rotar el contorno externo de una matriz cuadrada impar una posición hacia la derecha
+        //10
+        public void Ejercicio10p1()
+        {
+            if (f != c || f % 2 == 0) return; // solo para matrices cuadradas impares
+
+            int n = f;
+            int i, j, aux;
+
+            aux = x[1, 1]; // guardar esquina superior izquierda
+
+            // mover hacia arriba la primera columna
+            for (i = 1; i < n; i++)
+            {
+                x[i, 1] = x[i + 1, 1];
+            }
+
+            // mover hacia la izquierda la última fila
+            for (j = 1; j < n; j++)
+            {
+                x[n, j] = x[n, j + 1];
+            }
+
+            // mover hacia abajo la última columna
+            for (i = n; i > 1; i--)
+            {
+                x[i, n] = x[i - 1, n];
+            }
+
+            // mover hacia la derecha la primera fila
+            for (j = n; j > 2; j--)
+            {
+                x[1, j] = x[1, j - 1];
+            }
+
+            // colocar el valor guardado
+            x[1, 2] = aux;
+        }
+
+
+
+    }
+}
+class nent
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MatricesCodeGunnerPro
+{
+    class nent
+    {
+        private int n;
+        public nent()
+        {
+            n = 0;
+        }
+        public void cargar(int dato)
+        {
+            n = dato;
+        }
+        public int descargar()
+        {
+            return n;
+        }
+
+        public bool verif_primo(int ele)
+        {
+            bool ban = true;
+            int c = 2;
+            if (ele > 1)
+            {
+                while (c <= (ele / 2) && (ban == true))
+                {
+                    if (ele % c == 0)
+                    {
+                        ban = false;
+                    }
+                    c++;
+                }
+            }
+            else
+            {
+                ban = false;
+            }
+
+            return ban;
+        }
+
+    }
+}
+
+
+Form1
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace MatricesCodeGunnerPro
+{
+    public partial class Form1 : Form
+    {
+        clasematrices m1, m2, m3, m4;
+        Arreglo3D Y1;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            m1 = new clasematrices();
+            m2 = new clasematrices();
+            m3 = new clasematrices();
+            m4 = new clasematrices();
+            Y1 = new Arreglo3D();
+        }
+
+        //cargar 1
+
+        private void cARGARToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            m1.cargar(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text));
+            textBox6.Text = m1.descargar();
+        }
+
+        private void dESCARGARToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            textBox6.Text = m1.descargar();
+        }
+
+        //cargar 2
+
+        private void cARGARToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m2.cargar(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text));
+            textBox7.Text = m2.descargar();
+        }
+
+        private void dESCARGARToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            textBox7.Text = m1.descargar();
+        }
+
+        //cargar 3
+
+        private void cARGARToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            m3.cargar(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text));
+            textBox8.Text = m3.descargar();
+        }
+
+        private void dESCARGARToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textBox8.Text = m1.descargar();
+        }
+
+        //cargar 4
+
+        private void cARGARToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            m4.cargar(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text));
+            textBox9.Text = m4.descargar();
+        }
+
+        private void dESCARGARToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            textBox9.Text = m1.descargar();
+        }
+
+
+        //practico 1
+
+        private void eJERCICIO1ACUMULARPRIMOSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m1.Ejercicio1p1(int.Parse(textBox1.Text), int.Parse(textBox2.Text), int.Parse(textBox3.Text), int.Parse(textBox4.Text));
+            textBox7.Text = m1.descargar();
+        }
+
+        private void eJERCICIO2FRECUENCIADELELEMENTOToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //int mf, mc, mp, ei, rs;
+            //mf = int.Parse(textBox1.Text);
+            //mc = int.Parse(textBox2.Text);
+            //mp = int.Parse(textBox3.Text);
+            //ei = int.Parse(textBox4.Text);
+            //rs = int.Parse(textBox5.Text);
+
+            Y1.CargarEjercicio2();
+
+            textBox7.Text = Y1.Descargar();
+        }
+
+        private void eJERCICIO3CONTARELEMENTOSUNICOSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textBox7.Text = string.Concat(m1.Ejercicio3p1());
+        }
+
+        private void eJERCICIO4TRANSPUESTAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Y1.CargarEjercicio2_1();                            // primero cargas datos
+            Y1.SumarElementosYGuardarEnUltimaProfundidad();  // luego haces la suma
+            textBox8.Text = Y1.Descargar();                   // y finalmente lo ves
+        }
+
+        private void eJERCICIO5VERIFICARFILASORDENADASASCENDENTEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m1.Ejercicio5p1();
+            textBox7.Text = m1.descargar();
+        }
+
+        private void eJERCICIO6IMPLEMENTARELEMENTODEMAYORFRECUENCIADELASFILASToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textBox10.Text = string.Concat(m1.Ejercicio6p1(m2));
+        }
+
+        private void eJERCICIO7VERIFICARORDENAMIENTORIGODE1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m1.Ejercicio7p1();
+            textBox7.Text = m1.descargar();
+        }
+
+        private void eJERCICIO8VERIFICARSIUNAMATRIZESTAINCLUIDAENOTRAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m1.Ejercicio8p1();
+            textBox7.Text = m1.descargar();
+        }
+
+        private void eJERCICIO9SEGMENTARENPARESEIMPARESORDENADOSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //aqui va la llamda del 9
+            m1.OrdenarMatrizSinVector();
+            textBox7.Text = m1.descargar();
+        }
+
+        private void eJERCICIO10ORDENARFILASPORLACANTIDADDEPRIMOSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            m1.Ejercicio10p1();
+            textBox7.Text = m1.descargar();
+        }
+    }
+}
+
